@@ -26,7 +26,7 @@ Use `-l` to show all available versions.
 
 ## Using as a Maven/Gradle Dependency
 
-The latest version is: ![Release](https://jitpack.io/v/Darkkraft/MinecraftRemapper.svg)
+The latest version is: ![Release](https://jitpack.io/v/YvanMazy/MinecraftRemapper.svg)
 
 ### Gradle
 
@@ -42,7 +42,7 @@ repositories {
 Dependency:
 
 ```gradle
-compileOnly 'com.github.Darkkraft:MinecraftRemapper:<VERSION>'
+compileOnly 'com.github.YvanMazy:MinecraftRemapper:<VERSION>'
 ```
 
 ### Maven
@@ -60,7 +60,7 @@ Dependency:
 
 ```xml
 <dependency>
-    <groupId>com.github.Darkkraft</groupId>
+    <groupId>com.github.YvanMazy</groupId>
     <artifactId>MinecraftRemapper</artifactId>
     <version><VERSION></version>
 </dependency>
