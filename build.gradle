@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'java-library'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '8.3.1'
 }
 
 group = 'be.darkkraft'
@@ -21,18 +21,19 @@ dependencies {
     api 'org.tinylog:tinylog-impl:2.7.0'
 
     // Arguments
-    api 'com.beust:jcommander:1.82'
+    api 'org.jcommander:jcommander:2.0'
 
     // Json
-    api 'com.google.code.gson:gson:2.10.1'
+    api 'com.google.code.gson:gson:2.11.0'
 
     // Byte code
     api 'net.md-5:SpecialSource:1.11.4'
-    api 'org.vineflower:vineflower:1.10.0'
+    api 'org.vineflower:vineflower:1.10.1'
 
     // Testing
-    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation platform('org.junit:junit-bom:5.10.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 publishing {
