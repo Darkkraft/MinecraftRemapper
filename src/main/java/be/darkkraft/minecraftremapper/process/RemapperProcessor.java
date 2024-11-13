@@ -71,17 +71,27 @@ public class RemapperProcessor {
             }
         }
         final Path mappingPath = this.downloadMapping();
-        final Path remapPath = this.remapJar(jarResult, mappingPath);
-        if (this.config.decompile()) {
-            LOGGER.info("Decompiling...");
-            final Path path = remapPath.resolveSibling("decompiled");
-            try {
-                FileUtil.recursiveDelete(path);
-            } catch (final IOException e) {
-                LOGGER.error("Failed to delete directory with decompiled files, continue to decompile...", e);
+        if (this.config.remap()) {
+            final Path remapPath = this.remapJar(jarResult, mappingPath);
+            if (this.config.decompile()) {
+                LOGGER.info("Decompiling...");
+                final Path path = remapPath.resolveSibling("decompiled");
+                try {
+                    FileUtil.recursiveDelete(path);
+                } catch (final IOException e) {
+                    LOGGER.error("Failed to delete directory with decompiled files, continue to decompile...", e);
+                }
+                Decompiler.builder().inputs(remapPath.toFile()).output(new DirectoryResultSaver(path.toFile())).build().decompile();
             }
-            Decompiler.builder().inputs(remapPath.toFile()).output(new DirectoryResultSaver(path.toFile())).build().decompile();
         }
+    }
+
+    public @NotNull Path getVersionJarPath() {
+        return this.root.resolve(this.config.version().id() + ".jar");
+    }
+
+    public @NotNull Path getMappingPath() {
+        return this.root.resolve(this.config.version().id() + ".map");
     }
 
     private void createOutputDirectory() throws ProcessingException {

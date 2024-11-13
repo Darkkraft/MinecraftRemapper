@@ -40,10 +40,13 @@ final class Configuration {
     @Parameter(order = 4, names = {"--type", "-t"}, description = "Select the type between 'server' and 'client'.")
     private DirectionType type;
 
-    @Parameter(order = 5, names = {"--decompile", "-d"}, description = "Decompile jar after remapping.")
+    @Parameter(order = 5, names = {"--remap", "-r"}, description = "Remap jar after downloading.")
+    private boolean remap = true;
+
+    @Parameter(order = 6, names = {"--decompile", "-d"}, description = "Decompile jar after remapping.")
     private boolean decompile;
 
-    @Parameter(order = 6, names = {"--output-directory", "-o"}, description = "Output directory.")
+    @Parameter(order = 7, names = {"--output-directory", "-o"}, description = "Output directory.")
     private String outputDirectory = "MinecraftRemapper";
 
     public boolean isHelp() {
@@ -60,6 +63,10 @@ final class Configuration {
 
     public DirectionType getType() {
         return this.type;
+    }
+
+    public boolean isRemap() {
+        return this.remap;
     }
 
     public boolean isDecompile() {

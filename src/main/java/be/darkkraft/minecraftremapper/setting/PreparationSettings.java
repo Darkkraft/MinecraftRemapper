@@ -32,7 +32,7 @@ import com.google.gson.Gson;
 import java.util.Objects;
 
 public record PreparationSettings(RequestHttpClient httpClient, Gson gson, DirectionType target, Version version, String outputDirectory,
-                                  boolean decompile) {
+                                  boolean remap, boolean decompile) {
 
     public PreparationSettings {
         Objects.requireNonNull(httpClient, "httpClient must not be null");

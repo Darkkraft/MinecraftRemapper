@@ -96,12 +96,18 @@ public class Main {
         }
 
         LOGGER.info("Selected version: {} ({})", version.id(), type);
+        LOGGER.info("Remapping: {}", config.isRemap());
         LOGGER.info("Decompiling: {}", config.isDecompile());
         LOGGER.info("Output directory: {}", config.getOutputDirectory());
         LOGGER.info("----------------");
 
-        final PreparationSettings settings =
-                new PreparationSettings(httpClient, gson, type, version, config.getOutputDirectory(), config.isDecompile());
+        final PreparationSettings settings = new PreparationSettings(httpClient,
+                gson,
+                type,
+                version,
+                config.getOutputDirectory(),
+                config.isRemap(),
+                config.isDecompile());
 
         final long start = System.currentTimeMillis();
         new RemapperProcessor(settings).process();
