@@ -59,7 +59,7 @@ public class RemapperProcessor {
 
     public void process() throws ProcessingException {
         this.createOutputDirectory();
-        this.downloadJson = this.fetchDownloadJson();
+        this.downloadJson = this.downloadVersionJson();
 
         final DownloadResult jarResult = this.downloadJar();
         // Unpack server version jar
@@ -94,6 +94,10 @@ public class RemapperProcessor {
         return this.root.resolve(this.config.version().id() + ".map");
     }
 
+    public @NotNull Path getVersionMetaPath() {
+        return this.root.resolve(this.config.version().id() + ".json");
+    }
+
     private void createOutputDirectory() throws ProcessingException {
         if (!Files.isDirectory(this.root)) {
             try {
@@ -104,15 +108,31 @@ public class RemapperProcessor {
         }
     }
 
-    private JsonObject fetchDownloadJson() throws ProcessingException {
+    private JsonObject downloadVersionJson() throws ProcessingException {
+        final Path path = this.getVersionMetaPath();
+        String json;
+        if (Files.exists(path)) {
+            try {
+                json = Files.readString(path);
+                final JsonObject downloads = this.parseDownloads(json);
+                if (downloads != null) {
+                    return downloads;
+                }
+            } catch (final Exception ignored) {
+            }
+        }
         final String url = this.config.version().url();
-        final String json;
         try {
             json = this.config.httpClient().getString(url);
         } catch (final RequestHttpException e) {
             throw new ProcessingException("Failed to download version metadata", e);
         }
-        return this.config.gson().fromJson(json, JsonObject.class).getAsJsonObject("downloads");
+        try {
+            Files.writeString(path, json);
+        } catch (final IOException e) {
+            LOGGER.error("Failed to save version metadata", e);
+        }
+        return this.parseDownloads(json);
     }
 
     private DownloadResult downloadJar() throws ProcessingException {
@@ -198,6 +218,10 @@ public class RemapperProcessor {
 
         LOGGER.info("{} is downloaded in {}ms", display, System.currentTimeMillis() - start);
         return new DownloadResult(path, false);
+    }
+
+    private JsonObject parseDownloads(final String json) {
+        return this.config.gson().fromJson(json, JsonObject.class).getAsJsonObject("downloads");
     }
 
     private boolean isAlreadyDownloaded(final Path path, final String sha1) throws IOException {
