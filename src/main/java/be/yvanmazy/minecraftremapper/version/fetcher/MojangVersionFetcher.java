@@ -22,12 +22,12 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.version.fetcher;
+package be.yvanmazy.minecraftremapper.version.fetcher;
 
-import be.darkkraft.minecraftremapper.http.RequestHttpClient;
-import be.darkkraft.minecraftremapper.version.Version;
-import be.darkkraft.minecraftremapper.version.VersionJsonAdapter;
-import be.darkkraft.minecraftremapper.version.fetcher.exception.VersionFetchingException;
+import be.yvanmazy.minecraftremapper.http.RequestHttpClient;
+import be.yvanmazy.minecraftremapper.version.Version;
+import be.yvanmazy.minecraftremapper.version.VersionJsonAdapter;
+import be.yvanmazy.minecraftremapper.version.fetcher.exception.VersionFetchingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

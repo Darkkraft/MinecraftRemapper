@@ -22,32 +22,40 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.version.fetcher;
+package be.yvanmazy.minecraftremapper.http;
 
-import be.darkkraft.minecraftremapper.http.RequestHttpClient;
-import be.darkkraft.minecraftremapper.version.Version;
-import be.darkkraft.minecraftremapper.version.fetcher.exception.VersionFetchingException;
-import com.google.gson.Gson;
+import be.yvanmazy.minecraftremapper.http.exception.RequestHttpException;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.net.http.HttpClient;
+import java.util.function.Consumer;
 
-public interface VersionFetcher {
+public interface RequestHttpClient {
 
+    @Contract("-> new")
     @NotNull
+    static RequestHttpClient newDefault() {
+        return newDefault(HttpClient.newHttpClient());
+    }
+
     @Contract("_ -> new")
-    static VersionFetcher newMojangFetcher(final @NotNull RequestHttpClient httpClient) {
-        return newMojangFetcher(httpClient, new Gson());
+    @NotNull
+    static RequestHttpClient newDefault(final @NotNull Consumer<HttpClient.Builder> consumer) {
+        final HttpClient.Builder builder = HttpClient.newBuilder();
+        consumer.accept(builder);
+        return newDefault(builder.build());
+    }
+
+    @Contract("_ -> new")
+    @NotNull
+    static RequestHttpClient newDefault(final @NotNull HttpClient httpClient) {
+        return new DefaultRequestHttpClient(httpClient);
     }
 
     @NotNull
-    @Contract("_, _ -> new")
-    static VersionFetcher newMojangFetcher(final @NotNull RequestHttpClient httpClient, final @NotNull Gson gson) {
-        return new MojangVersionFetcher(httpClient, gson);
-    }
+    String getString(final @NotNull String url) throws RequestHttpException;
 
-    @NotNull
-    List<Version> fetchVersions() throws VersionFetchingException;
+    byte @NotNull [] getBytes(final @NotNull String url) throws RequestHttpException;
 
 }

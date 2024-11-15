@@ -22,28 +22,32 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.version;
+package be.yvanmazy.minecraftremapper.version.fetcher;
 
-public enum VersionType {
+import be.yvanmazy.minecraftremapper.http.RequestHttpClient;
+import be.yvanmazy.minecraftremapper.version.Version;
+import be.yvanmazy.minecraftremapper.version.fetcher.exception.VersionFetchingException;
+import com.google.gson.Gson;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
-    OLD_ALPHA,
-    OLD_BETA,
-    SNAPSHOT,
-    RELEASE;
+import java.util.List;
 
-    private static final VersionType[] CACHED_VALUES = values();
+public interface VersionFetcher {
 
-    public static VersionType fromString(final String string) {
-        for (final VersionType type : CACHED_VALUES) {
-            if (type.name().equalsIgnoreCase(string)) {
-                return type;
-            }
-        }
-        return null;
+    @NotNull
+    @Contract("_ -> new")
+    static VersionFetcher newMojangFetcher(final @NotNull RequestHttpClient httpClient) {
+        return newMojangFetcher(httpClient, new Gson());
     }
 
-    public boolean isOld() {
-        return this == OLD_ALPHA || this == OLD_BETA;
+    @NotNull
+    @Contract("_, _ -> new")
+    static VersionFetcher newMojangFetcher(final @NotNull RequestHttpClient httpClient, final @NotNull Gson gson) {
+        return new MojangVersionFetcher(httpClient, gson);
     }
+
+    @NotNull
+    List<Version> fetchVersions() throws VersionFetchingException;
 
 }

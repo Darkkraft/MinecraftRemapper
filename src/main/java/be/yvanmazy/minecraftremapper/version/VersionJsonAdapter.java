@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.version;
+package be.yvanmazy.minecraftremapper.version;
 
 import com.google.gson.*;
 import org.jetbrains.annotations.Contract;

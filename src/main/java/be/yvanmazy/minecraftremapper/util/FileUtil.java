@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.util;
+package be.yvanmazy.minecraftremapper.util;
 
 import org.jetbrains.annotations.NotNull;
 

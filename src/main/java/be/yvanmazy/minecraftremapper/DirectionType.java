@@ -22,30 +22,20 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.version.fetcher.exception;
+package be.yvanmazy.minecraftremapper;
 
-public class VersionFetchingException extends Exception {
+public enum DirectionType {
 
-    public VersionFetchingException() {
+    CLIENT("client"),
+    SERVER("server");
+
+    private final String key;
+
+    DirectionType(final String key) {
+        this.key = key;
     }
 
-    public VersionFetchingException(final String message) {
-        super(message);
+    public String getKey() {
+        return this.key;
     }
-
-    public VersionFetchingException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public VersionFetchingException(final Throwable cause) {
-        super(cause);
-    }
-
-    public VersionFetchingException(final String message,
-                                    final Throwable cause,
-                                    final boolean enableSuppression,
-                                    final boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
-
 }

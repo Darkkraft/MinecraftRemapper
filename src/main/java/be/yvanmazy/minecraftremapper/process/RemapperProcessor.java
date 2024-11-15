@@ -22,13 +22,13 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.process;
+package be.yvanmazy.minecraftremapper.process;
 
-import be.darkkraft.minecraftremapper.DirectionType;
-import be.darkkraft.minecraftremapper.http.exception.RequestHttpException;
-import be.darkkraft.minecraftremapper.process.exception.ProcessingException;
-import be.darkkraft.minecraftremapper.setting.PreparationSettings;
-import be.darkkraft.minecraftremapper.util.FileUtil;
+import be.yvanmazy.minecraftremapper.DirectionType;
+import be.yvanmazy.minecraftremapper.http.exception.RequestHttpException;
+import be.yvanmazy.minecraftremapper.process.exception.ProcessingException;
+import be.yvanmazy.minecraftremapper.setting.PreparationSettings;
+import be.yvanmazy.minecraftremapper.util.FileUtil;
 import com.google.gson.JsonObject;
 import net.md_5.specialsource.Jar;
 import net.md_5.specialsource.JarMapping;

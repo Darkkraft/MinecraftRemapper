@@ -22,15 +22,15 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper;
+package be.yvanmazy.minecraftremapper;
 
-import be.darkkraft.minecraftremapper.http.RequestHttpClient;
-import be.darkkraft.minecraftremapper.process.RemapperProcessor;
-import be.darkkraft.minecraftremapper.process.exception.ProcessingException;
-import be.darkkraft.minecraftremapper.setting.PreparationSettings;
-import be.darkkraft.minecraftremapper.version.Version;
-import be.darkkraft.minecraftremapper.version.fetcher.VersionFetcher;
-import be.darkkraft.minecraftremapper.version.fetcher.exception.VersionFetchingException;
+import be.yvanmazy.minecraftremapper.http.RequestHttpClient;
+import be.yvanmazy.minecraftremapper.process.RemapperProcessor;
+import be.yvanmazy.minecraftremapper.process.exception.ProcessingException;
+import be.yvanmazy.minecraftremapper.setting.PreparationSettings;
+import be.yvanmazy.minecraftremapper.version.Version;
+import be.yvanmazy.minecraftremapper.version.fetcher.VersionFetcher;
+import be.yvanmazy.minecraftremapper.version.fetcher.exception.VersionFetchingException;
 import com.beust.jcommander.JCommander;
 import com.google.gson.Gson;
 import org.slf4j.Logger;

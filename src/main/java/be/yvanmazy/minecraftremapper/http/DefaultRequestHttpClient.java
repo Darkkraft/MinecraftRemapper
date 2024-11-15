@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.http;
+package be.yvanmazy.minecraftremapper.http;
 
-import be.darkkraft.minecraftremapper.http.exception.RequestHttpException;
+import be.yvanmazy.minecraftremapper.http.exception.RequestHttpException;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;

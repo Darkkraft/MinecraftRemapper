@@ -22,30 +22,28 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.http.exception;
+package be.yvanmazy.minecraftremapper.setting;
 
-public class RequestHttpException extends Exception {
+import be.yvanmazy.minecraftremapper.DirectionType;
+import be.yvanmazy.minecraftremapper.http.RequestHttpClient;
+import be.yvanmazy.minecraftremapper.version.Version;
+import com.google.gson.Gson;
 
-    public RequestHttpException() {
+import java.util.Objects;
+
+public record PreparationSettings(RequestHttpClient httpClient, Gson gson, DirectionType target, Version version, String outputDirectory,
+                                  boolean remap, boolean decompile) {
+
+    public PreparationSettings {
+        Objects.requireNonNull(httpClient, "httpClient must not be null");
+        Objects.requireNonNull(gson, "gson must not be null");
+        Objects.requireNonNull(target, "target must not be null");
+        Objects.requireNonNull(version, "version must not be null");
+        Objects.requireNonNull(outputDirectory, "outputDirectory must not be null");
     }
 
-    public RequestHttpException(final String message) {
-        super(message);
-    }
-
-    public RequestHttpException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public RequestHttpException(final Throwable cause) {
-        super(cause);
-    }
-
-    public RequestHttpException(final String message,
-                                final Throwable cause,
-                                final boolean enableSuppression,
-                                final boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+    public String getTargetKey() {
+        return this.target.getKey();
     }
 
 }

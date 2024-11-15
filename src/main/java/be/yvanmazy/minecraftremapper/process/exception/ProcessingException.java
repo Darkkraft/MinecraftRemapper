@@ -22,19 +22,30 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.version;
+package be.yvanmazy.minecraftremapper.process.exception;
 
-import org.jetbrains.annotations.NotNull;
+public class ProcessingException extends Exception {
 
-import java.time.OffsetDateTime;
-import java.util.Objects;
+    public ProcessingException() {
+    }
 
-public record Version(@NotNull String id, @NotNull VersionType type, @NotNull String url, OffsetDateTime time, OffsetDateTime releaseTime) {
+    public ProcessingException(final String message) {
+        super(message);
+    }
 
-    public Version {
-        Objects.requireNonNull(id, "id must not be null");
-        Objects.requireNonNull(type, "type must not be null");
-        Objects.requireNonNull(url, "url must not be null");
+    public ProcessingException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
+    public ProcessingException(final Throwable cause) {
+        super(cause);
+    }
+
+    public ProcessingException(final String message,
+                               final Throwable cause,
+                               final boolean enableSuppression,
+                               final boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 
 }

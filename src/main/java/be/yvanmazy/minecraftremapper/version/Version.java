@@ -22,40 +22,19 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.http;
+package be.yvanmazy.minecraftremapper.version;
 
-import be.darkkraft.minecraftremapper.http.exception.RequestHttpException;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.http.HttpClient;
-import java.util.function.Consumer;
+import java.time.OffsetDateTime;
+import java.util.Objects;
 
-public interface RequestHttpClient {
+public record Version(@NotNull String id, @NotNull VersionType type, @NotNull String url, OffsetDateTime time, OffsetDateTime releaseTime) {
 
-    @Contract("-> new")
-    @NotNull
-    static RequestHttpClient newDefault() {
-        return newDefault(HttpClient.newHttpClient());
+    public Version {
+        Objects.requireNonNull(id, "id must not be null");
+        Objects.requireNonNull(type, "type must not be null");
+        Objects.requireNonNull(url, "url must not be null");
     }
-
-    @Contract("_ -> new")
-    @NotNull
-    static RequestHttpClient newDefault(final @NotNull Consumer<HttpClient.Builder> consumer) {
-        final HttpClient.Builder builder = HttpClient.newBuilder();
-        consumer.accept(builder);
-        return newDefault(builder.build());
-    }
-
-    @Contract("_ -> new")
-    @NotNull
-    static RequestHttpClient newDefault(final @NotNull HttpClient httpClient) {
-        return new DefaultRequestHttpClient(httpClient);
-    }
-
-    @NotNull
-    String getString(final @NotNull String url) throws RequestHttpException;
-
-    byte @NotNull [] getBytes(final @NotNull String url) throws RequestHttpException;
 
 }

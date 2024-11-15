@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper;
+package be.yvanmazy.minecraftremapper;
 
 import com.beust.jcommander.Parameter;
 

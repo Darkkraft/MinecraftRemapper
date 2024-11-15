@@ -22,29 +22,29 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.process.exception;
+package be.yvanmazy.minecraftremapper.http.exception;
 
-public class ProcessingException extends Exception {
+public class RequestHttpException extends Exception {
 
-    public ProcessingException() {
+    public RequestHttpException() {
     }
 
-    public ProcessingException(final String message) {
+    public RequestHttpException(final String message) {
         super(message);
     }
 
-    public ProcessingException(final String message, final Throwable cause) {
+    public RequestHttpException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public ProcessingException(final Throwable cause) {
+    public RequestHttpException(final Throwable cause) {
         super(cause);
     }
 
-    public ProcessingException(final String message,
-                               final Throwable cause,
-                               final boolean enableSuppression,
-                               final boolean writableStackTrace) {
+    public RequestHttpException(final String message,
+                                final Throwable cause,
+                                final boolean enableSuppression,
+                                final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 

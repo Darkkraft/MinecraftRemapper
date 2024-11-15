@@ -22,20 +22,10 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper;
+package be.yvanmazy.minecraftremapper.process;
 
-public enum DirectionType {
+import java.nio.file.Path;
 
-    CLIENT("client"),
-    SERVER("server");
+public record DownloadResult(Path path, boolean skipped) {
 
-    private final String key;
-
-    DirectionType(final String key) {
-        this.key = key;
-    }
-
-    public String getKey() {
-        return this.key;
-    }
 }

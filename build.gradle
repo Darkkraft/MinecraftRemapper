@@ -5,7 +5,7 @@ plugins {
     id 'com.gradleup.shadow' version '8.3.1'
 }
 
-group = 'be.darkkraft'
+group = 'be.yvanmazy'
 version = '1.0'
 
 repositories {
@@ -46,7 +46,7 @@ publishing {
 
 shadowJar {
     manifest {
-        attributes 'Main-Class': 'be.darkkraft.minecraftremapper.Main'
+        attributes 'Main-Class': 'be.yvanmazy.minecraftremapper.Main'
     }
     archiveClassifier.set('')
 }

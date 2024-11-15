@@ -22,10 +22,30 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.process;
+package be.yvanmazy.minecraftremapper.version.fetcher.exception;
 
-import java.nio.file.Path;
+public class VersionFetchingException extends Exception {
 
-public record DownloadResult(Path path, boolean skipped) {
+    public VersionFetchingException() {
+    }
+
+    public VersionFetchingException(final String message) {
+        super(message);
+    }
+
+    public VersionFetchingException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
+    public VersionFetchingException(final Throwable cause) {
+        super(cause);
+    }
+
+    public VersionFetchingException(final String message,
+                                    final Throwable cause,
+                                    final boolean enableSuppression,
+                                    final boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
 
 }

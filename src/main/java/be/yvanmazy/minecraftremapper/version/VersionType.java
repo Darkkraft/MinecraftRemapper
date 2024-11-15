@@ -22,28 +22,28 @@
  * SOFTWARE.
  */
 
-package be.darkkraft.minecraftremapper.setting;
+package be.yvanmazy.minecraftremapper.version;
 
-import be.darkkraft.minecraftremapper.DirectionType;
-import be.darkkraft.minecraftremapper.http.RequestHttpClient;
-import be.darkkraft.minecraftremapper.version.Version;
-import com.google.gson.Gson;
+public enum VersionType {
 
-import java.util.Objects;
+    OLD_ALPHA,
+    OLD_BETA,
+    SNAPSHOT,
+    RELEASE;
 
-public record PreparationSettings(RequestHttpClient httpClient, Gson gson, DirectionType target, Version version, String outputDirectory,
-                                  boolean remap, boolean decompile) {
+    private static final VersionType[] CACHED_VALUES = values();
 
-    public PreparationSettings {
-        Objects.requireNonNull(httpClient, "httpClient must not be null");
-        Objects.requireNonNull(gson, "gson must not be null");
-        Objects.requireNonNull(target, "target must not be null");
-        Objects.requireNonNull(version, "version must not be null");
-        Objects.requireNonNull(outputDirectory, "outputDirectory must not be null");
+    public static VersionType fromString(final String string) {
+        for (final VersionType type : CACHED_VALUES) {
+            if (type.name().equalsIgnoreCase(string)) {
+                return type;
+            }
+        }
+        return null;
     }
 
-    public String getTargetKey() {
-        return this.target.getKey();
+    public boolean isOld() {
+        return this == OLD_ALPHA || this == OLD_BETA;
     }
 
 }
