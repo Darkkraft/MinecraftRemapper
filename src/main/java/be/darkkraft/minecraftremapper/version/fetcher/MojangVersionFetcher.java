@@ -26,19 +26,16 @@ package be.darkkraft.minecraftremapper.version.fetcher;
 
 import be.darkkraft.minecraftremapper.http.RequestHttpClient;
 import be.darkkraft.minecraftremapper.version.Version;
-import be.darkkraft.minecraftremapper.version.VersionType;
+import be.darkkraft.minecraftremapper.version.VersionJsonAdapter;
 import be.darkkraft.minecraftremapper.version.fetcher.exception.VersionFetchingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,32 +65,14 @@ final class MojangVersionFetcher implements VersionFetcher {
     }
 
     private List<Version> parseVersions(final JsonArray versions) {
-        return versions.asList()
-                .stream()
-                .filter(JsonElement::isJsonObject)
-                .map(JsonElement::getAsJsonObject)
-                .map(MojangVersionFetcher::parseVersion)
-                .filter(Objects::nonNull)
-                .toList();
-    }
-
-    private static @Nullable Version parseVersion(final JsonObject object) {
-        final String id = object.get("id").getAsString();
-        final String rawType = object.get("type").getAsString();
-        final VersionType type = VersionType.fromString(rawType);
-        if (type == null) {
-            LOGGER.warn("Invalid version type on '{}': {}", id, rawType);
-            return null;
-        }
-        final String url = object.get("url").getAsString();
-        final OffsetDateTime time = parseTime(object.get("time").getAsString());
-        final OffsetDateTime releaseTime = parseTime(object.get("releaseTime").getAsString());
-
-        return new Version(id, type, url, time, releaseTime);
-    }
-
-    private static OffsetDateTime parseTime(final @NotNull String string) {
-        return OffsetDateTime.parse(string, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        return versions.asList().stream().filter(JsonElement::isJsonObject).map(JsonElement::getAsJsonObject).map(object -> {
+            try {
+                return VersionJsonAdapter.deserialize(object);
+            } catch (final Exception e) {
+                LOGGER.warn("Failed to parse version", e);
+                return null;
+            }
+        }).filter(Objects::nonNull).toList();
     }
 
 }
