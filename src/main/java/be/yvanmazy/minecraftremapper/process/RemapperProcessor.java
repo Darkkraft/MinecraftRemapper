@@ -94,6 +94,10 @@ public class RemapperProcessor {
         return this.root.resolve(this.config.version().id() + ".map");
     }
 
+    public @NotNull Path getRemappedJarPath() {
+        return this.root.resolve("remapped-" + this.config.version().id() + ".jar");
+    }
+
     public @NotNull Path getVersionMetaPath() {
         return this.root.resolve(this.config.version().id() + ".json");
     }
