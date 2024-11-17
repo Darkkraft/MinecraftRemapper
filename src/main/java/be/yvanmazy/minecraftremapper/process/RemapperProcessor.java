@@ -72,7 +72,7 @@ public class RemapperProcessor {
         }
         final Path mappingPath = this.downloadMapping();
         if (this.config.remap()) {
-            final Path remapPath = this.remapJar(jarResult, mappingPath);
+            final Path remapPath = this.remapJar(jarResult, mappingPath, this.getRemappedJarPath());
             if (this.config.decompile()) {
                 LOGGER.info("Decompiling...");
                 final Path path = remapPath.resolveSibling("decompiled");
@@ -140,11 +140,11 @@ public class RemapperProcessor {
     }
 
     private DownloadResult downloadJar() throws ProcessingException {
-        return this.download("Version jar", this.config.getTargetKey(), "jar");
+        return this.download("Version jar", this.config.getTargetKey(), this.getVersionJarPath());
     }
 
     private Path downloadMapping() throws ProcessingException {
-        return this.download("Version mapping", this.config.getTargetKey() + "_mappings", "map").path();
+        return this.download("Version mapping", this.config.getTargetKey() + "_mappings", this.getMappingPath()).path();
     }
 
     private void unpackServerJar(final Path path) throws ProcessingException {
@@ -162,11 +162,10 @@ public class RemapperProcessor {
         }
     }
 
-    private Path remapJar(final DownloadResult jarResult, final Path mappingPath) throws ProcessingException {
-        final Path path = this.root.resolve("remapped-" + this.config.version().id() + ".jar");
-        if (jarResult.skipped() && FileUtil.isValidJar(path)) {
+    private Path remapJar(final DownloadResult jarResult, final Path mappingPath, final Path outPath) throws ProcessingException {
+        if (jarResult.skipped() && FileUtil.isValidJar(outPath)) {
             LOGGER.info("SKIP --> Remapping is already done.");
-            return path;
+            return outPath;
         }
         LOGGER.info("Load mappings...");
         final JarMapping jarMapping = new JarMapping();
@@ -178,22 +177,21 @@ public class RemapperProcessor {
         final JarRemapper jarRemapper = new JarRemapper(jarMapping);
         LOGGER.info("Remapping...");
         try {
-            jarRemapper.remapJar(Jar.init(jarResult.path().toFile()), path.toFile());
+            jarRemapper.remapJar(Jar.init(jarResult.path().toFile()), outPath.toFile());
         } catch (final IOException e) {
             throw new ProcessingException("Failed to remap jar", e);
         }
-        return path;
+        return outPath;
     }
 
-    private DownloadResult download(final String display, final String jsonKey, final String extension) throws ProcessingException {
+    private DownloadResult download(final String display, final String jsonKey, final Path outPath) throws ProcessingException {
         final JsonObject base = this.downloadJson.getAsJsonObject(jsonKey);
-        final Path path = this.root.resolve(this.config.version().id() + '.' + extension);
         final String sha1 = base.get("sha1").getAsString();
 
         try {
-            if (this.isAlreadyDownloaded(path, sha1)) {
+            if (this.isAlreadyDownloaded(outPath, sha1)) {
                 LOGGER.info("SKIP --> {} is already downloaded.", display);
-                return new DownloadResult(path, true);
+                return new DownloadResult(outPath, true);
             }
         } catch (final IOException e) {
             throw new ProcessingException("Failed to check sha1 file", e);
@@ -210,18 +208,18 @@ public class RemapperProcessor {
             throw new ProcessingException("Failed to download file data", e);
         }
         try {
-            Files.write(path, fileContent);
+            Files.write(outPath, fileContent);
         } catch (final IOException e) {
             throw new ProcessingException("Failed to write file", e);
         }
         try {
-            Files.writeString(this.toHashPath(path), sha1);
+            Files.writeString(this.toHashPath(outPath), sha1);
         } catch (final IOException e) {
             throw new ProcessingException("Failed to write sha1 file", e);
         }
 
         LOGGER.info("{} is downloaded in {}ms", display, System.currentTimeMillis() - start);
-        return new DownloadResult(path, false);
+        return new DownloadResult(outPath, false);
     }
 
     private JsonObject parseDownloads(final String json) {
