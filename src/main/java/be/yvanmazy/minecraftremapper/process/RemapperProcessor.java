@@ -29,6 +29,7 @@ import be.yvanmazy.minecraftremapper.http.exception.RequestHttpException;
 import be.yvanmazy.minecraftremapper.process.exception.ProcessingException;
 import be.yvanmazy.minecraftremapper.setting.PreparationSettings;
 import be.yvanmazy.minecraftremapper.util.FileUtil;
+import be.yvanmazy.minecraftremapper.util.HashUtil;
 import com.google.gson.JsonObject;
 import net.md_5.specialsource.Jar;
 import net.md_5.specialsource.JarMapping;
@@ -212,10 +213,19 @@ public class RemapperProcessor {
         } catch (final IOException e) {
             throw new ProcessingException("Failed to write file", e);
         }
-        try {
-            Files.writeString(this.toHashPath(outPath), sha1);
-        } catch (final IOException e) {
-            throw new ProcessingException("Failed to write sha1 file", e);
+        if (sha1 != null) {
+            try {
+                if (!sha1.equals(HashUtil.hash(outPath))) {
+                    throw new ProcessingException("Checksum failed for '" + display + "'");
+                }
+            } catch (final IOException e) {
+                throw new ProcessingException("Failed to checksum for '" + display + "'", e);
+            }
+            try {
+                Files.writeString(this.toHashPath(outPath), sha1);
+            } catch (final IOException e) {
+                throw new ProcessingException("Failed to write sha1 file", e);
+            }
         }
 
         LOGGER.info("{} is downloaded in {}ms", display, System.currentTimeMillis() - start);
@@ -233,11 +243,17 @@ public class RemapperProcessor {
         if (path.getFileName().toString().endsWith(".jar") && !FileUtil.isValidJar(path)) {
             return false;
         }
-        final Path hashFile = this.toHashPath(path);
-        if (Files.exists(hashFile)) {
-            return Files.readString(hashFile).equals(sha1);
+        if (sha1 != null) {
+            if (!sha1.equals(HashUtil.hash(path))) {
+                return false;
+            }
+            final Path hashFile = this.toHashPath(path);
+            if (Files.exists(hashFile)) {
+                return Files.readString(hashFile).equals(sha1);
+            }
+            return false;
         }
-        return false;
+        return true;
     }
 
     private Path toHashPath(final @NotNull Path path) {
